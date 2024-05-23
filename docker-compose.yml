@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  api:
+    image: "node:20.13.1"
+    working_dir: /app/api
+    command: bash -c "yarn && yarn run dev"
+    volumes:
+      - ./api:/app/api
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    ports: ["8080:8080"]
+
+  web:
+    image: "node:20.13.1"
+    depends_on: ["api"]
+    working_dir: /app/web
+    command: bash -c "yarn && yarn run dev"
+    volumes:
+      - "./web:/app/web"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    expose: ["3000"]
+    ports: ["3000:3000"]
